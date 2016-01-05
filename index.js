@@ -229,14 +229,15 @@ function postLove(self, song, sk, callback) {
   if (sk && self.sessionKey == null) {
     self.sessionKey = sk
   }
-  var apiSig    = makeHash('api_key' + self.apiKey + 'artist' + song.artist + 'methodtrack.lovesk' + self.sessionKey + 'track' + song.track + self.apiSecret)
+  var apiSig    = makeHash('album' + song.album + 'api_key' + self.apiKey + 'artist' + song.artist + 'methodtrack.lovesk' + self.sessionKey + 'track' + song.track + self.apiSecret)
     , post_data = querystring.stringify({
         method: 'track.love',
         api_key: self.apiKey,
         sk: self.sessionKey,
         api_sig: apiSig,
         artist: song.artist,
-        track: song.track
+        track: song.track,
+        album: song.album
       })
   sendPost(post_data, callback)
 }
@@ -255,11 +256,12 @@ function postNowPlaying(self, song, sk, callback) {
     self.sessionKey = sk
   }
   var dur       = (song.duration) ? 'duration' + song.duration : ''
-    , apiSig    = makeHash('api_key' + self.apiKey + 'artist' + song.artist + dur + 'methodtrack.updateNowPlayingsk' + self.sessionKey + 'track' + song.track + self.apiSecret)
+    , apiSig    = makeHash('album' + song.album + 'api_key' + self.apiKey + 'artist' + song.artist + dur + 'methodtrack.updateNowPlayingsk' + self.sessionKey + 'track' + song.track + self.apiSecret)
     , post_data = querystring.stringify({
         method: 'track.updateNowPlaying',
         artist: song.artist,
         track: song.track,
+        album: song.album,
         duration: song.duration,
         api_key: self.apiKey,
         api_sig: apiSig,
@@ -283,7 +285,7 @@ function postScrobble(self, song, sk, callback) {
   }
   var now       = new Date().getTime()
     , timestamp = Math.floor(now /1000)
-    , apiSig    = makeHash('api_key' + self.apiKey + 'artist' + song.artist + 'methodtrack.scrobblesk' + self.sessionKey + 'timestamp' + timestamp + 'track' + song.track + self.apiSecret)
+    , apiSig    = makeHash('album' + song.album + 'api_key' + self.apiKey + 'artist' + song.artist + 'methodtrack.scrobblesk' + self.sessionKey + 'timestamp' + timestamp + 'track' + song.track + self.apiSecret)
     , post_data = querystring.stringify({
         method: 'track.scrobble',
         api_key: self.apiKey,
@@ -291,7 +293,8 @@ function postScrobble(self, song, sk, callback) {
         api_sig: apiSig,
         timestamp: timestamp,
         artist: song.artist,
-        track: song.track
+        track: song.track,
+        album: song.album
       })
   sendPost(post_data, callback)
 }
